@@ -1,5 +1,11 @@
 <?php
     include('../componentes/header.php');
+
+    require('../database/conexao.php');
+
+    $sql = "SELECT * FROM tbl_pessoa";
+
+    $resultado = mysqli_query($conexao, $sql);
 ?>
 
 <div class="container">
@@ -20,22 +26,33 @@
     </thead>
 
     <tbody>
-            <tr>
-                <th>1</th>
-                <th>TESTE DE NOME</th>
-                <th>TESTE DE SOBRENOME</th>
-                <th>TESTE DE EMAIL</th>
-                <th>TESTE DE CELULAR</th>
-                <th>
-                    <button class="btn btn-warning">Editar</button>
 
-                    <form action="" method="post" style="display: inline;">
-                        <input type="hidden" name="id" value="">
-                        <button class="btn btn-danger">Excluir</button>
-                    </form>
-                    
+    <?php
+    while($usuario = mysqli_fetch_array($resultado)) {
+
+        $id = $usuario["cod_pessoa"];
+        $nome = $usuario["nome"];
+        $sobrenome = $usuario["sobrenome"];
+        $email = $usuario["email"];
+        $celular = $usuario["celular"];
+
+    ?>
+            <tr>
+                <th><?php echo $cod_pessoa?></th>
+                <th><?php echo $nome?></th>
+                <th><?php echo $sobrenome?></th>
+                <th><?php echo $email?></th>
+                <th><?php echo $celular?></th>
+                <th>
+
+    
+                <a href="acoes.php?cod_pessoas<?php echo $dados["cod_pessoa"]?>">EDITAR</a>
+                <a href="acoes.php?cod_pessoas<?php echo $dados["cod_pessoa"].'&acoes=delete'?>">EXLCUIR</a>
                 </th>
             </tr>
+            <?php
+    }
+    ?>
     </tbody>
 
     </table>
