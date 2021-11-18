@@ -1,11 +1,8 @@
 <?php
+    session_start();
+    if (isset($_SESSION['idSessao'])) {
+
     include('../componentes/header.php');
-
-    require('../database/conexao.php');
-
-    $sql = "SELECT * FROM tbl_pessoa";
-
-    $resultado = mysqli_query($conexao, $sql);
 ?>
 
 
@@ -16,8 +13,8 @@
                 <h2>Cadastro</h2>
             </div>
             <div class="card-body">
-                <form method="post" action="../acoes.php">
-                    <input type="hidden" name="acao" value="inserir">
+                <form method="post" action="./acoes.php">
+                    <input name="acao" type="hidden" value="inserir">
                     <input class="form-control" type="text" placeholder="Digite o nome" name="nome" id="nome">
                     <br />
                     <input class="form-control" type="text" placeholder="Digite o sobrenome" name="sobrenome" id="sobrenome">
@@ -34,5 +31,11 @@
 
 
 <?php
+
+    } else{
+        header('location: ../login/index.php');
+        echo('USUÁRIO NÃO AUTENTICADO');
+    }
+
     include('../componentes/footer.php');
 ?>

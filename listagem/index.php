@@ -1,6 +1,13 @@
 <?php
-    include('../componentes/header.php');
+    session_start();
 
+    if (isset($_SESSION['idSessao'])) {
+
+    include('../componentes/header.php');
+    ?>
+
+    <?php
+    
     require('../database/conexao.php');
 
     $sql = "SELECT * FROM tbl_pessoa";
@@ -27,32 +34,31 @@
 
     <tbody>
 
-    <?php
-    while($usuario = mysqli_fetch_array($resultado)) {
-
-        $id = $usuario["cod_pessoa"];
-        $nome = $usuario["nome"];
-        $sobrenome = $usuario["sobrenome"];
-        $email = $usuario["email"];
-        $celular = $usuario["celular"];
-
-    ?>
+        <?php
+            while($pessoa = mysqli_fetch_array($resultado)):
+                
+                $cod_pessoa = $pessoa['cod_pessoa'];
+        ?>
             <tr>
-                <th><?php echo $cod_pessoa?></th>
-                <th><?php echo $nome?></th>
-                <th><?php echo $sobrenome?></th>
-                <th><?php echo $email?></th>
-                <th><?php echo $celular?></th>
+                <th><?=$pessoa['cod_pessoa']?></th>
+                <th><?=$pessoa['nome']?></th>
+                <th><?=$pessoa['sobrenome']?></th>
+                <th><?=$pessoa['email']?></th>
+                <th><?=$pessoa['celular']?></th>
                 <th>
+                    <button onclick='javascript:window.location.href = "../cadastro/editar.php?cod_pessoa=<?=$cod_pessoa?>" ' class="btn btn-warning">Editar</button>
 
-    
-                <a href="acoes.php?cod_pessoas<?php echo $dados["cod_pessoa"]?>">EDITAR</a>
-                <a href="acoes.php?cod_pessoas<?php echo $dados["cod_pessoa"].'&acoes=delete'?>">EXLCUIR</a>
+                    <form action="../cadastro/acoes.php" method="POST" style="display: inline;">
+                        <input type="hidden" name="cod_pessoa" value="<?=$cod_pessoa?>">
+                        <input type="hidden" name="acao" value="deletar">
+                        <button class="btn btn-danger">Excluir</button>
+                    </form>
+                    
                 </th>
             </tr>
-            <?php
-    }
-    ?>
+        <?php
+            endwhile;
+        ?>
     </tbody>
 
     </table>
@@ -60,5 +66,9 @@
 </div>
 
 <?php
+    } else{
+        header('location: ../login/index.php');
+        echo('USUÁRIO NÃO AUTENTICADO');
+    }
     include('../componentes/footer.php');
 ?>
